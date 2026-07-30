@@ -1,0 +1,45 @@
+services:
+  qdrant:
+    image: qdrant/qdrant
+    ports:
+      - 6333:6333
+    volumes:
+      - "./docker_volumes/qdrant_storage:/qdrant/storage:z"
+    configs:
+      - source: qdrant_config
+        target: /qdrant/config/production.yaml
+  db:
+    image: postgres:17-alpine
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    ports:
+      - 5432:5432
+    volumes:
+     - "./docker_volumes/database_data:/var/lib/postgresql/data:z"
+     - "./docker/db_pg:/docker-entrypoint-initdb.d:z"
+  # docling:
+  #   image: ghcr.io/docling-project/docling-serve-cu124
+  #   ports:
+  #     - 5001:5001
+  #   environment:
+  #     - DOCLING_SERVE_ENABLE_UI=true
+  #   volumes:
+  #     - ./docling-model/SmolVLM-256M-Instruct:/opt/app-root/src/.cache/docling/models/SmolVLM-256M-Instruct
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - driver: nvidia
+  #             count: all # alternatively, use `count: all` for all GPUs
+  #             capabilities: [gpu]
+configs:
+  qdrant_config:
+    content: |
+      log_level: INFO

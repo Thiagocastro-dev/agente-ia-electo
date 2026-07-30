@@ -1,0 +1,36 @@
+services:
+  qdrant-test:
+    image: qdrant/qdrant:v1.14.2
+    ports:
+      - "56333:6333"
+    volumes:
+      - qdrant_test_data:/qdrant/storage
+    configs:
+      - source: qdrant_test_config
+        target: /qdrant/config/production.yaml
+
+  db-test:
+    image: postgres:17-alpine
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d rag_test"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: rag_test
+    ports:
+      - "55432:5432"
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data
+      - ./docker/db_pg:/docker-entrypoint-initdb.d:ro
+
+volumes:
+  qdrant_test_data:
+  postgres_test_data:
+
+configs:
+  qdrant_test_config:
+    content: |
+      log_level: INFO

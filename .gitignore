@@ -1,0 +1,11 @@
+.venv/
+docker_volumes/
+__pycache__
+.env
+.env.test
+*.log
+/docling-model/
+*.pdf
+/output/
+/api/output/
+/template/
