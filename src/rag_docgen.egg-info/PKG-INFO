@@ -12,14 +12,15 @@ Requires-Dist: google-genai>=1.6.0
 Requires-Dist: langchain>=0.3.25
 Requires-Dist: langchain-core>=0.3.58
 Requires-Dist: langchain-docling>=0.2.0
+Requires-Dist: langchain-google-genai>=2.1.12
 Requires-Dist: langchain-openai>=0.3.16
 Requires-Dist: langchain-qdrant>=0.2.0
 Requires-Dist: loguru>=0.7.3
 Requires-Dist: opencv-python>=4.11.0.86
 Requires-Dist: pdf2image>=1.17.0
-Requires-Dist: psycopg2>=2.9.10
 Requires-Dist: psycopg2-binary>=2.9.10
 Requires-Dist: pypdf2>=3.0.1
+Requires-Dist: pytest>=8.3.5
 Requires-Dist: python-dotenv>=1.1.0
 Requires-Dist: qdrant-client>=1.14.2
 Requires-Dist: requests>=2.32.3
@@ -28,3 +29,24 @@ Requires-Dist: tenacity>=9.1.2
 Requires-Dist: torch>=2.6.0
 Requires-Dist: transformers>=4.51.3
 Requires-Dist: vllm>=0.8.5.post1
+
+## Ambiente de testes
+
+O teste unitário não depende de serviços externos:
+
+```bash
+uv sync
+uv run pytest
+```
+
+Para testes de integração, copie a configuração de teste e suba PostgreSQL e Qdrant em portas e volumes separados do ambiente normal:
+
+```bash
+cp .env.test.example .env.test
+make test-infra-up
+set -a; source .env.test; set +a
+uv run pytest
+make test-infra-down
+```
+
+O PostgreSQL de teste usa o banco `rag_test` na porta `55432`, e o Qdrant usa a porta `56333`. Os dados ficam em volumes Docker nomeados e não compartilham o armazenamento de desenvolvimento.

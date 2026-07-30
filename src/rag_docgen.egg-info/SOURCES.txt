@@ -6,6 +6,7 @@ src/api/main.py
 src/chat/__init__.py
 src/chat/api.py
 src/chat/chat_service.py
+src/chat/order_logic.py
 src/ingestion/api.py
 src/ingestion/ingest.py
 src/ingestion/docling_custom/__init__.py
@@ -14,7 +15,8 @@ src/ingestion/ocr/base_ocr.py
 src/ingestion/ocr/docint_tce_ocr.py
 src/ingestion/ocr/docling_ocr.py
 src/ingestion/pdf_processor/process_pdf.py
-src/llm/langchain_azure.py
+src/llm/gemini_embeddings.py
+src/llm/langchain_gemini.py
 src/rag_docgen.egg-info/PKG-INFO
 src/rag_docgen.egg-info/SOURCES.txt
 src/rag_docgen.egg-info/dependency_links.txt
@@ -24,6 +26,10 @@ src/repository/relational/chat_repository.py
 src/repository/relational/document_part_repository.py
 src/repository/relational/document_repository.py
 src/repository/relational/models.py
+src/repository/relational/order_repository.py
 src/repository/relational/pg_db.py
 src/repository/vector/base_repository.py
 src/repository/vector/qdrant_repository.py
+src/whatsapp/__init__.py
+src/whatsapp/api.py
+src/whatsapp/transcription.py
